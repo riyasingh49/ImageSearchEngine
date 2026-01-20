@@ -1,41 +1,47 @@
-const searchForm = document.getElementById('searchForm');
-const search = document.getElementById('search');
-const searchResult = document.getElementById('search-result');
-const showMore = document.getElementById('Show-more');
+const searchForm = document.getElementById("searchForm");
+const search = document.getElementById("search");
+const searchResult = document.getElementById("search-result");
+const showMore = document.getElementById("Show-more");
 
-let keyword = '';
+let keyword = "";
 let page = 1;
 
 async function searchImages() {
-    keyword = search.value;
+  keyword = search.value.trim();
+  if (!keyword) return;
 
-    const url = `http://localhost:5001/api/search?q=${keyword}&page=${page}`;
+  const url = `/api/search?q=${keyword}&page=${page}`;
 
+  try {
     const response = await fetch(url);
     const data = await response.json();
 
-    if(page === 1){
-        searchResult.innerHTML = '';
+    if (page === 1) {
+      searchResult.innerHTML = "";
     }
 
     const results = data.results;
 
     results.forEach((result) => {
-        const image = document.createElement('img');
-        image.src = result.urls.small;
-        searchResult.appendChild(image);
+      const image = document.createElement("img");
+      image.src = result.urls.small;
+      image.alt = result.alt_description || "Unsplash Image";
+      searchResult.appendChild(image);
     });
 
-    showMore.style.display = 'block';
+    showMore.style.display = "block";
+  } catch (error) {
+    console.error("Error fetching images:", error);
+  }
 }
 
-searchForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    page = 1;
-    searchImages();
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  page = 1;
+  searchImages();
 });
 
-showMore.addEventListener('click', () => {
-    page++;
-    searchImages();
+showMore.addEventListener("click", () => {
+  page++;
+  searchImages();
 });
