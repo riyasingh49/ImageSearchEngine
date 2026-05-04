@@ -9,14 +9,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// API key from Vercel Environment Variables
 const ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 app.get("/", (req, res) => {
   res.send("Backend is running");
 });
 
-// Search endpoint
 app.get("/api/search", async (req, res) => {
   const keyword = req.query.q;
   const page = req.query.page || 1;
@@ -46,4 +44,8 @@ app.get("/api/search", async (req, res) => {
   }
 });
 
-export default app;
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
