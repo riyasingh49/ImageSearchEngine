@@ -1,5 +1,13 @@
 const BASE_URL = "https://image-search-backend-208q.onrender.com";
 
+const searchForm = document.getElementById("searchForm");
+const search = document.getElementById("search");
+const searchResult = document.getElementById("search-result");
+const showMore = document.getElementById("Show-more");
+
+let keyword = "";
+let page = 1;
+
 async function searchImages() {
   keyword = search.value.trim();
   if (!keyword) return;
@@ -44,6 +52,7 @@ async function searchImages() {
     searchResult.innerHTML = "<p>Something went wrong</p>";
   }
 }
+
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
   page = 1;
